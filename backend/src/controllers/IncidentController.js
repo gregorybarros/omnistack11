@@ -39,6 +39,7 @@ module.exports = {
     },
 
     async delete(req, res) {
+        
         const { id } = req.params
         const ong_id = req.headers.authorization
 
@@ -46,6 +47,10 @@ module.exports = {
         .where('id', id)
         .select('ong_id')
         .first()
+        
+        if (!incident){
+            return res.status(400).json({ error: 'Incident not exist.' })
+        }
 
         if (incident.ong_id != ong_id) {
             return res.status(401).json({ error: 'Operation not permited.' })
